@@ -1,10 +1,11 @@
 package com.drones.dimuth.drone.management.service.model;
 
-public enum DroneStatus {
+public enum DroneState {
     IDLE,
     LOADING,
     LOADED,
     DELIVERING,
     DELIVERED,
     RETURNING
+
 }

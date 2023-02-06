@@ -1,7 +1,7 @@
 package com.drones.dimuth.drone.management.service.drone;
 
 import com.drones.dimuth.drone.management.service.model.DroneModel;
-import com.drones.dimuth.drone.management.service.model.DroneStatus;
+import com.drones.dimuth.drone.management.service.model.DroneState;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -14,12 +14,12 @@ public class Drone  {
     private DroneModel model;
     private double weightLimit;
     private double batteryLevel;
-    private DroneStatus state;
+    private DroneState state;
 
     public Drone() {
     }
 
-    public Drone(String serialNumber, DroneModel model, double weightLimit, double batteryLevel, DroneStatus state) {
+    public Drone(String serialNumber, DroneModel model, double weightLimit, double batteryLevel, DroneState state) {
         this.serialNumber = serialNumber;
         this.model = model;
         this.weightLimit = weightLimit;
@@ -59,7 +59,11 @@ public class Drone  {
         this.batteryLevel = batteryLevel;
     }
 
-    public DroneStatus getState() {
+    public DroneState getState() {
         return state;
+    }
+
+    public void setState(DroneState state) {
+        this.state = state;
     }
 }
