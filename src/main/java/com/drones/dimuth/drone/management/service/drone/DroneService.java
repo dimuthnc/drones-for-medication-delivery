@@ -27,18 +27,4 @@ public class DroneService {
         }
 
     }
-
-    private static boolean isValidDrone(Drone drone) {
-        if(drone.getSerialNumber().length() > 100) {
-            return false;
-        }
-        if (drone.getWeightLimit() > 500) {
-            return false;
-        }
-        if(drone.getBatteryLevel() > 100){
-            return false;
-        }
-        return true;
-
-    }
 }
