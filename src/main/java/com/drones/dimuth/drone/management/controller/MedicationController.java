@@ -1,5 +1,6 @@
-package com.drones.dimuth.drone.management.service.medication;
+package com.drones.dimuth.drone.management.controller;
 
+import com.drones.dimuth.drone.management.service.MedicationService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,4 +1,4 @@
-package com.drones.dimuth.drone.management.service.exception;
+package com.drones.dimuth.drone.management.exception;
 
 public class DroneManagementServiceException extends Exception {
 

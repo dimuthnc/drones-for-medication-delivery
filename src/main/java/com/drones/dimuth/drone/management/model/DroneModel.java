@@ -1,4 +1,4 @@
-package com.drones.dimuth.drone.management.service.model;
+package com.drones.dimuth.drone.management.model;
 
 public enum DroneModel {
     Lightweight,

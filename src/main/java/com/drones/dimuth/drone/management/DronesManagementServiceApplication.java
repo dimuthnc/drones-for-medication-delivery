@@ -1,20 +1,15 @@
-package com.drones.dimuth.drone.management.service;
+package com.drones.dimuth.drone.management;
 
-import com.drones.dimuth.drone.management.service.exception.DroneManagementServiceException;
-import com.drones.dimuth.drone.management.service.medication.Medication;
-import com.drones.dimuth.drone.management.service.medication.MedicationService;
+import com.drones.dimuth.drone.management.exception.DroneManagementServiceException;
+import com.drones.dimuth.drone.management.dao.Medication;
+import com.drones.dimuth.drone.management.service.MedicationService;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Base64;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;

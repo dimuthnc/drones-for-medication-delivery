@@ -1,20 +1,25 @@
-package com.drones.dimuth.drone.management.service.drone;
+package com.drones.dimuth.drone.management.dao;
 
-import com.drones.dimuth.drone.management.service.model.DroneModel;
-import com.drones.dimuth.drone.management.service.model.DroneState;
+import com.drones.dimuth.drone.management.model.DroneModel;
+import com.drones.dimuth.drone.management.model.DroneState;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "drone")
-public class Drone  {
+public class Drone {
     @Id
     private String serialNumber;
     private DroneModel model;
     private double weightLimit;
     private double batteryLevel;
     private DroneState state;
+
+    @OneToMany(mappedBy = "droneSerialNumber")
+    private List<Delivery> deliveries;
 
     public Drone() {
     }

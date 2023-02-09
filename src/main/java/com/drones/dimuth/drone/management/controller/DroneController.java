@@ -1,5 +1,7 @@
-package com.drones.dimuth.drone.management.service.drone;
+package com.drones.dimuth.drone.management.controller;
 
+import com.drones.dimuth.drone.management.dao.Drone;
+import com.drones.dimuth.drone.management.service.DroneService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,7 +28,6 @@ public class DroneController {
 
     @PostMapping
     public void addDrone(@RequestBody Drone drone) {
-
         droneService.addDrone(drone);
     }
 

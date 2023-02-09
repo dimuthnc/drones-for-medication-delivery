@@ -1,5 +1,7 @@
-package com.drones.dimuth.drone.management.service.medication;
+package com.drones.dimuth.drone.management.service;
 
+import com.drones.dimuth.drone.management.dao.Medication;
+import com.drones.dimuth.drone.management.repository.MedicationRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

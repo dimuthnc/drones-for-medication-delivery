@@ -1,6 +1,8 @@
-package com.drones.dimuth.drone.management.service.drone;
+package com.drones.dimuth.drone.management.service;
 
-import com.drones.dimuth.drone.management.service.model.DroneState;
+import com.drones.dimuth.drone.management.dao.Drone;
+import com.drones.dimuth.drone.management.model.DroneState;
+import com.drones.dimuth.drone.management.repository.DroneRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

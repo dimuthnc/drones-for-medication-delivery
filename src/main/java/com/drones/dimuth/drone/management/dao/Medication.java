@@ -1,8 +1,10 @@
-package com.drones.dimuth.drone.management.service.medication;
+package com.drones.dimuth.drone.management.dao;
 
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -17,6 +19,9 @@ public class Medication {
     private byte[] image;
 
     private String name;
+
+    @OneToMany(mappedBy = "medication")
+    private List<MedicationDelivery> medicationDeliveries;
 
     public Medication() {
 
