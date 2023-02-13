@@ -4,6 +4,7 @@ import com.drones.dimuth.drone.management.dao.Drone;
 import com.drones.dimuth.drone.management.model.DroneState;
 import com.drones.dimuth.drone.management.repository.DroneRepository;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,5 +44,47 @@ public class DroneService {
                 && drone.getState() == null
                 && drone.getBatteryLevel() >= 0
                 && drone.getBatteryLevel() <= 100;
+    }
+
+    public Optional<Drone> findDroneBySerialNumber(String serialNumber) {
+        return droneRepository.findDroneBySerialNumber(serialNumber);
+    }
+
+    public void updateDroneStatus(Drone drone, DroneState state) {
+        Optional<Drone> droneOptional =
+                droneRepository.findDroneBySerialNumber(drone.getSerialNumber());
+        if(droneOptional.isPresent()) {
+            DroneState currentState = droneOptional.get().getState();
+            if(isValidStateChange(currentState, state)) {
+                droneRepository.updateDroneStatus(drone.getSerialNumber() , state);
+            }
+            else {
+                throw new IllegalStateException("Invalid state change");
+            }
+            droneRepository.updateDroneStatus(drone.getSerialNumber() , state);
+        }
+        else {
+            throw new IllegalStateException("Drone not found");
+        }
+
+    }
+
+    private boolean isValidStateChange(DroneState currentState, DroneState state) {
+        switch (currentState) {
+            case IDLE:
+                return state == DroneState.LOADED;
+            case LOADED:
+                return state == DroneState.DELIVERING;
+            case DELIVERING:
+                return state == DroneState.DELIVERED;
+            case DELIVERED:
+                return state == DroneState.IDLE;
+            default:
+                return false;
+        }
+    }
+
+    public DroneState getDroneState(String serialNumber) {
+        return droneRepository.findDroneBySerialNumber(serialNumber).get().getState();
     }
 }

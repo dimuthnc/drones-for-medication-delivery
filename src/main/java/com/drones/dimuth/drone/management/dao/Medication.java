@@ -1,5 +1,6 @@
 package com.drones.dimuth.drone.management.dao;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,6 +16,7 @@ public class Medication {
     private double weight;
     @Id
     private String code;
+    @JsonIgnore
     @Column(length = 10000000)
     private byte[] image;
 

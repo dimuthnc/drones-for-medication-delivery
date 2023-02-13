@@ -18,10 +18,14 @@ public class Drone {
     private double batteryLevel;
     private DroneState state;
 
-    @OneToMany(mappedBy = "droneSerialNumber")
+    @OneToMany(mappedBy = "drone")
     private List<Delivery> deliveries;
 
     public Drone() {
+    }
+
+    public Drone(String serialNumber){
+        this.serialNumber = serialNumber;
     }
 
     public Drone(String serialNumber, DroneModel model, double weightLimit, double batteryLevel, DroneState state) {

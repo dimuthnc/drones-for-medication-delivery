@@ -1,5 +1,6 @@
 package com.drones.dimuth.drone.management.service;
 
+import com.drones.dimuth.drone.management.dao.MedicationDelivery;
 import com.drones.dimuth.drone.management.repository.MedicationDeliveryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,4 +15,7 @@ public class MedicationDeliveryService {
         this.medicationDeliveryRepository = medicationDeliveryRepository;
     }
 
+    public void addMedicationDelivery(MedicationDelivery medicationDelivery) {
+        this.medicationDeliveryRepository.save(medicationDelivery);
+    }
 }
