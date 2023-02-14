@@ -2,6 +2,7 @@ package com.drones.dimuth.drone.management.controller;
 
 import com.drones.dimuth.drone.management.dao.Delivery;
 import com.drones.dimuth.drone.management.dao.MedicationDelivery;
+import com.drones.dimuth.drone.management.exception.DroneManagementServiceException;
 import com.drones.dimuth.drone.management.service.DeliveryService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,14 +31,7 @@ public class DeliveryController {
     }
 
     @PostMapping
-    public void addDelivery(@RequestBody Delivery delivery) {
-        List<MedicationDelivery> medicationDeliveries = delivery.getMedicationDeliveries();
-
-        medicationDeliveries.forEach(medicationDelivery -> {
-            medicationDelivery.setDelivery(delivery);
-        });
-
+    public void addDelivery(@RequestBody Delivery delivery) throws DroneManagementServiceException {
         deliveryService.addDelivery(delivery);
-
     }
 }
