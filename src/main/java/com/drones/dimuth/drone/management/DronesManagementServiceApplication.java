@@ -48,8 +48,8 @@ public class DronesManagementServiceApplication {
         for (int i = 0; i < 10; i++) {
             String serialNumber = String.valueOf(i);
             DroneModel model = models.get(ThreadLocalRandom.current().nextInt(0, 4));
-            double weightLimit = ThreadLocalRandom.current().nextDouble(0.0, 500.0);
-            double batteryLevel = ThreadLocalRandom.current().nextDouble(0.0, 100.0);
+            double weightLimit = roundDouble(ThreadLocalRandom.current().nextDouble(0.0, 500.0));
+            double batteryLevel = roundDouble(ThreadLocalRandom.current().nextDouble(0.0, 100.0));
             DroneState state = null;
             Drone drone = new Drone(serialNumber, model, weightLimit, batteryLevel, state);
 			droneService.addDrone(drone);
@@ -75,7 +75,7 @@ public class DronesManagementServiceApplication {
         List<String> medicationCodes = Arrays.asList("1234", "1235", "1236", "1237");
         List<Medication> medications = new ArrayList<>();
         for (int i = 0 ; i < 4; i++) {
-            double weight = ThreadLocalRandom.current().nextInt(300, 500);
+            double weight = roundDouble(ThreadLocalRandom.current().nextDouble(30, 100));
             byte[] image = readImageFile(imageNames.get(i));
             String code = medicationCodes.get(i);
             String name = medicationNames.get(i);
@@ -101,6 +101,10 @@ public class DronesManagementServiceApplication {
         } catch (IOException e) {
             throw new DroneManagementServiceException("Error while reading image file", e);
         }
+    }
+
+    private static double roundDouble(double amount) {
+        return Math.round(amount * 100.0) / 100.0;
     }
 
 }
