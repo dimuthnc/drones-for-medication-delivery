@@ -34,14 +34,14 @@ public class DeliveryService {
         this.medicationService = medicationService;
     }
 
-    public Delivery getDeliveryByDrone(String id) {
+    public Delivery getDeliveryByDrone(String id) throws DroneManagementServiceException {
 
         Optional<Drone> droneOptional = droneService.findDroneBySerialNumber(id);
         if (droneOptional.isPresent() && droneOptional.get().getState() == DroneState.LOADED) {
             Drone drone = droneOptional.get();
             return deliveryRepository.findByDrone(drone);
         } else {
-            throw new IllegalStateException("Invalid Serial Number");
+            throw new DroneManagementServiceException("Invalid Serial Number");
         }
     }
 

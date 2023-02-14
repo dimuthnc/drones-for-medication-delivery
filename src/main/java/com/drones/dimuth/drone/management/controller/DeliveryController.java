@@ -22,7 +22,7 @@ public class DeliveryController {
     }
 
     @GetMapping("drone/{id}")
-    public Delivery getDeliveryByDroneId(@PathVariable String id) {
+    public Delivery getDeliveryByDroneId(@PathVariable String id) throws DroneManagementServiceException {
         Delivery delivery = deliveryService.getDeliveryByDrone(id);
         return delivery;
     }
