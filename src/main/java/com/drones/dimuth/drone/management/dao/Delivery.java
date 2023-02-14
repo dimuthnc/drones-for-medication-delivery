@@ -1,11 +1,8 @@
 package com.drones.dimuth.drone.management.dao;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
-import java.util.UUID;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -28,13 +25,16 @@ public class Delivery {
     private Drone drone;
 
     @JsonManagedReference
-    @OneToMany(mappedBy ="delivery")
+    @OneToMany(mappedBy = "delivery")
     private List<MedicationDelivery> medicationDeliveries;
 
     public Delivery() {
     }
 
-
+    public Delivery(Drone drone, List<MedicationDelivery> medicationDeliveries) {
+        this.drone = drone;
+        this.medicationDeliveries = medicationDeliveries;
+    }
 
     public long getId() {
         return id;
@@ -42,10 +42,6 @@ public class Delivery {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public void setDrone(Drone drone) {
-        this.drone = drone;
     }
 
     public List<MedicationDelivery> getMedicationDeliveries() {
@@ -57,12 +53,12 @@ public class Delivery {
         this.medicationDeliveries = medicationDeliveries;
     }
 
-    public Delivery(Drone drone, List<MedicationDelivery> medicationDeliveries) {
-        this.drone = drone;
-        this.medicationDeliveries = medicationDeliveries;
-    }
 
     public Drone getDrone() {
         return drone;
+    }
+
+    public void setDrone(Drone drone) {
+        this.drone = drone;
     }
 }

@@ -24,7 +24,7 @@ public class Drone {
     public Drone() {
     }
 
-    public Drone(String serialNumber){
+    public Drone(String serialNumber) {
         this.serialNumber = serialNumber;
     }
 

@@ -1,7 +1,6 @@
 package com.drones.dimuth.drone.management.dao;
 
 public class BatteryLevel {
-
     double batteryLevel;
 
     public BatteryLevel(double batteryLevel) {

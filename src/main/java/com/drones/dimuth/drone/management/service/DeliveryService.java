@@ -7,6 +7,7 @@ import com.drones.dimuth.drone.management.dao.MedicationDelivery;
 import com.drones.dimuth.drone.management.exception.DroneManagementServiceException;
 import com.drones.dimuth.drone.management.model.DroneState;
 import com.drones.dimuth.drone.management.repository.DeliveryRepository;
+import com.drones.dimuth.drone.management.util.DroneManagementConstants;
 import java.util.List;
 import java.util.Optional;
 import javax.transaction.Transactional;
@@ -26,30 +27,28 @@ public class DeliveryService {
 
     @Autowired
     public DeliveryService(DeliveryRepository deliveryRepository, DroneService droneService,
-                           MedicationDeliveryService medicationDeliveryService, MedicationService medicationService){
+                           MedicationDeliveryService medicationDeliveryService, MedicationService medicationService) {
         this.deliveryRepository = deliveryRepository;
         this.droneService = droneService;
         this.medicationDeliveryService = medicationDeliveryService;
         this.medicationService = medicationService;
     }
+
     public Delivery getDeliveryByDrone(String id) {
 
         Optional<Drone> droneOptional = droneService.findDroneBySerialNumber(id);
         if (droneOptional.isPresent() && droneOptional.get().getState() == DroneState.LOADED) {
             Drone drone = droneOptional.get();
             return deliveryRepository.findByDrone(drone);
-        }
-        else {
+        } else {
             throw new IllegalStateException("Invalid Serial Number");
         }
-
-
     }
 
     @Transactional
     public void addDelivery(Delivery delivery) throws DroneManagementServiceException {
         Optional<Drone> drone = droneService.findDroneBySerialNumber(delivery.getDrone().getSerialNumber());
-        if(drone.isPresent() && drone.get().getBatteryLevel() > 10) {
+        if (drone.isPresent() && drone.get().getBatteryLevel() > DroneManagementConstants.MIN_BATTERY_FOR_LOADING) {
             Delivery savedDelivery = deliveryRepository.save(delivery);
             List<MedicationDelivery> medicationDeliveries = delivery.getMedicationDeliveries();
             double droneWeightLimit = drone.get().getWeightLimit();
@@ -60,36 +59,29 @@ public class DeliveryService {
                         medicationService.getMedicationByCode(medicationDelivery.getMedication().getCode());
                 if (medication.isPresent()) {
                     weightSum += medication.get().getWeight();
-                    if(weightSum < droneWeightLimit) {
+                    if (weightSum < droneWeightLimit) {
                         medicationDelivery.setMedication(medication.get());
                         saveMedicationDelivery(medicationDelivery);
+                    } else {
+                        throw new DroneManagementServiceException("Drone Weight Limit Exceeded");
                     }
-                    else {
-                        throw new IllegalStateException("Drone Weight Limit Exceeded");
-                    }
-                }
-                else {
-                    throw new IllegalStateException("Medication not found");
+                } else {
+                    throw new DroneManagementServiceException("Medication not found");
                 }
             }
             droneService.updateDroneStatus(delivery.getDrone(), DroneState.LOADED);
-        }
-        else {
-            if(!drone.isPresent()) {
+        } else {
+            if (drone.isEmpty()) {
                 throw new DroneManagementServiceException("Drone not found");
+            } else {
+                throw new DroneManagementServiceException(
+                        "Need more than 10% battery in " + "the drone to create a delivery");
             }
-            else {
-                throw new IllegalStateException("Need more than 10% battery to load medication");
-            }
-
         }
-
     }
 
     private void saveMedicationDelivery(MedicationDelivery medicationDelivery) {
         medicationDeliveryService.addMedicationDelivery(medicationDelivery);
 
     }
-
-
 }

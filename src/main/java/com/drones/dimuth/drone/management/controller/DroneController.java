@@ -35,12 +35,13 @@ public class DroneController {
     }
 
     @PostMapping
-    public void addDrone(@RequestBody Drone drone) {
+    public void addDrone(@RequestBody Drone drone) throws DroneManagementServiceException {
         droneService.addDrone(drone);
     }
 
     @GetMapping("{droneSerialNumber}/battery")
-    public BatteryLevel getDroneBatteryLevel(@PathVariable String droneSerialNumber) throws DroneManagementServiceException {
+    public BatteryLevel getDroneBatteryLevel(@PathVariable String droneSerialNumber)
+            throws DroneManagementServiceException {
         return droneService.getDroneBatteryLevel(droneSerialNumber);
     }
 

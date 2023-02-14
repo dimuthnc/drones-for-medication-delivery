@@ -21,7 +21,7 @@ public class MedicationDelivery {
     private Delivery delivery;
 
     @ManyToOne
-    @JoinColumn (name = "medication_id")
+    @JoinColumn(name = "medication_id")
     private Medication medication;
 
     public Delivery getDelivery() {
