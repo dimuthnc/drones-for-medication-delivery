@@ -1,5 +1,6 @@
 package com.drones.dimuth.drone.management.dao;
 
+import com.drones.dimuth.drone.management.util.DroneManagementConstants;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.List;
 import javax.persistence.Column;
@@ -17,7 +18,7 @@ public class Medication {
     @Id
     private String code;
     @JsonIgnore
-    @Column(length = 10000000)
+    @Column(length = DroneManagementConstants.IMAGE_COLUMN_SIZE)
     private byte[] image;
 
     private String name;
