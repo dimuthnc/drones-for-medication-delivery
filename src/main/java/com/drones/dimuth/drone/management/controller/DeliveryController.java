@@ -21,13 +21,13 @@ public class DeliveryController {
         this.deliveryService = deliveryService;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("drone/{id}")
     public Delivery getDeliveryByDroneId(@PathVariable String id) {
         Delivery delivery = deliveryService.getDeliveryByDrone(id);
         return delivery;
     }
 
-    @PostMapping
+    @PostMapping("drone")
     public void addDelivery(@RequestBody Delivery delivery) throws DroneManagementServiceException {
         deliveryService.addDelivery(delivery);
     }
