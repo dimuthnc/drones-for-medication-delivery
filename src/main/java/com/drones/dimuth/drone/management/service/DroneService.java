@@ -1,6 +1,8 @@
 package com.drones.dimuth.drone.management.service;
 
+import com.drones.dimuth.drone.management.dao.BatteryLevel;
 import com.drones.dimuth.drone.management.dao.Drone;
+import com.drones.dimuth.drone.management.exception.DroneManagementServiceException;
 import com.drones.dimuth.drone.management.model.DroneState;
 import com.drones.dimuth.drone.management.repository.DroneRepository;
 import java.util.List;
@@ -86,5 +88,21 @@ public class DroneService {
 
     public DroneState getDroneState(String serialNumber) {
         return droneRepository.findDroneBySerialNumber(serialNumber).get().getState();
+    }
+
+    public List<Drone> getAllAvailableDrones() {
+        return droneRepository.findDronesByState(DroneState.IDLE);
+    }
+
+    public BatteryLevel getDroneBatteryLevel(String droneSerialNumber) throws DroneManagementServiceException {
+        Optional<Drone> droneOptional =
+                droneRepository.findDroneBySerialNumber(droneSerialNumber);
+        if(droneOptional.isPresent()){
+            return new BatteryLevel(droneOptional.get().getBatteryLevel());
+
+        }
+        else {
+            throw new DroneManagementServiceException("Invalid Drone Serial Number");
+        }
     }
 }
