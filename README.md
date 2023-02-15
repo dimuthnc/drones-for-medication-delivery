@@ -12,7 +12,7 @@ This application uses the H2 in-memory database as the default database.
 
 To build this project locally on your machine, please follow the below steps.
 
-1. Install git, maven and JDK ( 11 or above) on your machine
+1. Install git, maven (3.x.x) and JDK ( 11 or above) on your machine
 Execute the below command from your terminal application in a desired location to clone this project.
 
 ```git clone https://github.com/dimuthnc/drones-for-medication-delivery ```
