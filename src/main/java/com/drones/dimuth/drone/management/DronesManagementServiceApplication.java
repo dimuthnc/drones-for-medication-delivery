@@ -1,10 +1,12 @@
 package com.drones.dimuth.drone.management;
 
+import com.drones.dimuth.drone.management.exception.DroneManagementServiceExceptionHandlerController;
 import com.drones.dimuth.drone.management.service.DroneService;
 import com.drones.dimuth.drone.management.service.MedicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Import;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
@@ -12,6 +14,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  */
 @SpringBootApplication
 @EnableScheduling
+@Import(DroneManagementServiceExceptionHandlerController.class)
 public class DronesManagementServiceApplication {
 
     private static MedicationService medicationService;

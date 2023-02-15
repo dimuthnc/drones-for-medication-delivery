@@ -5,6 +5,7 @@ import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
@@ -15,9 +16,10 @@ public class DroneManagementServiceExceptionHandlerController {
 
     @ExceptionHandler(DroneManagementServiceException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public void handleDroneManagementServiceException(DroneManagementServiceException e) {
-
+    @ResponseBody
+    public Map<String, Object> handleDroneManagementServiceException(DroneManagementServiceException e) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", e.getMessage());
+        return response;
     }
-
-
 }
