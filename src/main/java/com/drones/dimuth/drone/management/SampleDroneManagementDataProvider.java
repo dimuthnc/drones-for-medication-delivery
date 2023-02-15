@@ -6,9 +6,6 @@ import com.drones.dimuth.drone.management.exception.DroneManagementServiceExcept
 import com.drones.dimuth.drone.management.model.DroneModel;
 import com.drones.dimuth.drone.management.util.DroneManagementConstants;
 import com.drones.dimuth.drone.management.util.DroneManagementUtil;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -28,12 +25,16 @@ public class SampleDroneManagementDataProvider {
         List<DroneModel> models =
                 Arrays.asList(DroneModel.Cruiserweight, DroneModel.Lightweight, DroneModel.Middleweight,
                         DroneModel.Heavyweight);
-
-        for (int i = 0; i < 10; i++) {
+        //SAMPLE_DRONE_COUNT is set to 10 in DroneManagementConstants for testing purposes.
+        for (int i = 0; i < DroneManagementConstants.SAMPLE_DRONE_COUNT; i++) {
             String serialNumber = String.valueOf(i);
-            DroneModel model = models.get(ThreadLocalRandom.current().nextInt(0, 4));
-            double weightLimit = DroneManagementUtil.roundDouble(ThreadLocalRandom.current().nextDouble(0.0, 500.0));
-            double batteryLevel = DroneManagementUtil.roundDouble(ThreadLocalRandom.current().nextDouble(0.0, 100.0));
+            DroneModel model = models.get(ThreadLocalRandom.current().nextInt(0, DroneModel.values().length));
+            double weightLimit = DroneManagementUtil.roundDouble(ThreadLocalRandom.current()
+                    .nextDouble(DroneManagementConstants.SAMPLE_DRONE_MIN_WEIGHT,
+                            DroneManagementConstants.SAMPLE_DRONE_MAX_WEIGHT));
+            double batteryLevel = DroneManagementUtil.roundDouble(ThreadLocalRandom.current()
+                    .nextDouble(DroneManagementConstants.SAMPLE_DRONE_MIN_BATTERY_LEVEL,
+                            DroneManagementConstants.SAMPLE_DRONE_MAX_BATTERY_LEVEL));
             Drone drone = new Drone(serialNumber, model, weightLimit, batteryLevel);
             try {
                 log.debug("Adding drone " + drone);
@@ -62,9 +63,12 @@ public class SampleDroneManagementDataProvider {
         List<String> medicationNames = Arrays.asList("Paracetamol", "Ibuprofen", "Aspirin", "Caffeine");
         List<String> medicationCodes = Arrays.asList("1234", "1235", "1236", "1237");
         List<Medication> medications = new ArrayList<>();
-        for (int i = 0; i < 4; i++) {
-            double weight = DroneManagementUtil.roundDouble(ThreadLocalRandom.current().nextDouble(30, 100));
-            byte[] image = readImageFile(imageNames.get(i));
+        //SAMPLE_MEDICATION_COUNT is set to 4 in DroneManagementConstants for testing purposes.
+        for (int i = 0; i < DroneManagementConstants.SAMPLE_MEDICATION_COUNT; i++) {
+            double weight = DroneManagementUtil.roundDouble(ThreadLocalRandom.current()
+                    .nextDouble(DroneManagementConstants.SAMPLE_MEDICATION_WEIGHT_MIN,
+                            DroneManagementConstants.SAMPLE_MEDICATION_WEIGHT_MAX));
+            byte[] image = DroneManagementUtil.readImageFromResources(imageNames.get(i));
             String code = medicationCodes.get(i);
             String name = medicationNames.get(i);
             Medication medication = new Medication(weight, code, image, name);
@@ -72,21 +76,5 @@ public class SampleDroneManagementDataProvider {
             medications.add(medication);
         }
         return medications;
-    }
-
-    public static byte[] readImageFile(String fileName) throws DroneManagementServiceException {
-        String imageLocation = "/medication-images/" + fileName;
-        try (InputStream inputStream = SampleDroneManagementDataProvider.class.getResourceAsStream(imageLocation)) {
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            byte[] buffer = new byte[DroneManagementConstants.IMAGE_BUFFER_SIZE];
-            int len;
-            while ((len = inputStream.read(buffer)) != -1) {
-                outputStream.write(buffer, 0, len);
-            }
-            return outputStream.toByteArray();
-        } catch (IOException e) {
-            log.error("Error while reading image file " + fileName + " from location " + imageLocation);
-            throw new DroneManagementServiceException("Error while reading image file", e);
-        }
     }
 }
