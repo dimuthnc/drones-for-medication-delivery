@@ -1,5 +1,8 @@
 package com.drones.dimuth.drone.management.dao;
 
+/**
+ * Entity class for battery level.
+ */
 public class BatteryLevel {
     double batteryLevel;
 

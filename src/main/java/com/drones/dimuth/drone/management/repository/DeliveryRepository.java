@@ -6,6 +6,9 @@ import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+/**
+ * JPA Repository for Delivery.
+ */
 @Repository
 public interface DeliveryRepository extends JpaRepository<Delivery, UUID> {
 

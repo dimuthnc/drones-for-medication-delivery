@@ -8,6 +8,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+/**
+ * Entity class for MedicationDelivery.
+ */
 @Entity
 public class MedicationDelivery {
 

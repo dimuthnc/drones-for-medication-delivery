@@ -5,6 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Rest controller for medication delivery related operations.
+ */
 @RestController
 @RequestMapping("api/v1/medication-delivery")
 public class MedicationDeliveryController {

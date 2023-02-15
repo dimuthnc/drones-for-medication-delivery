@@ -7,6 +7,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * Entity class for DroneBatteryAuditRecord.
+ */
 @Entity
 @Table(name = "DroneBatteryAuditRecord")
 public class DroneBatteryAuditRecord {

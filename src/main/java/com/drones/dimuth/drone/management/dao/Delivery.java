@@ -12,6 +12,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+/**
+ * Entity class for Delivery.
+ */
 @Entity
 @Table(name = "delivery")
 public class Delivery {

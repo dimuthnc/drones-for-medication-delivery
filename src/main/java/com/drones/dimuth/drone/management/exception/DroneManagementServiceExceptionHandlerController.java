@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+/**
+ * Exception handler controller for DroneManagementServiceException.
+ */
 @ControllerAdvice
 public class DroneManagementServiceExceptionHandlerController {
 

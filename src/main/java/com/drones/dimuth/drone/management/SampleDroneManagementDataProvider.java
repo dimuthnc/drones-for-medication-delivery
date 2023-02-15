@@ -16,6 +16,9 @@ import java.util.concurrent.ThreadLocalRandom;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+/**
+ * Class to add sample data to the application.
+ */
 public class SampleDroneManagementDataProvider {
 
     private static final Log log = LogFactory.getLog(SampleDroneManagementDataProvider.class);

@@ -9,6 +9,9 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+/**
+ * JPA Repository for Drone.
+ */
 @Repository
 public interface DroneRepository extends JpaRepository<Drone, String> {
     Optional<Drone> findDroneBySerialNumber(String serialNumber);

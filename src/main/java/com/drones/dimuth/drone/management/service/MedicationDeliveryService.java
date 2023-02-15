@@ -5,6 +5,9 @@ import com.drones.dimuth.drone.management.repository.MedicationDeliveryRepositor
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/**
+ * Service to add medication delivery records.
+ */
 @Service
 public class MedicationDeliveryService {
     MedicationDeliveryRepository medicationDeliveryRepository;
