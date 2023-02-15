@@ -11,7 +11,7 @@ import javax.persistence.Table;
  * Entity class for DroneBatteryAuditRecord.
  */
 @Entity
-@Table(name = "DroneBatteryAuditRecord")
+@Table(name = "drone_battery_audit_record")
 public class DroneBatteryAuditRecord {
 
     @Id
