@@ -51,8 +51,7 @@ public class Delivery {
         return medicationDeliveries;
     }
 
-    public void setMedicationDeliveries(
-            List<MedicationDelivery> medicationDeliveries) {
+    public void setMedicationDeliveries(List<MedicationDelivery> medicationDeliveries) {
         this.medicationDeliveries = medicationDeliveries;
     }
 

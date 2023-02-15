@@ -1,7 +1,12 @@
 package com.drones.dimuth.drone.management.util;
 
+import com.drones.dimuth.drone.management.SampleDroneManagementDataProvider;
 import com.drones.dimuth.drone.management.dao.Drone;
+import com.drones.dimuth.drone.management.exception.DroneManagementServiceException;
 import com.drones.dimuth.drone.management.model.DroneState;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -36,9 +41,12 @@ public class DroneManagementUtil {
 
     public static boolean isValidDroneAddRequest(Drone drone) {
         log.debug("Validating drone add request of drone " + drone);
-        return drone.getSerialNumber() != null && drone.getModel() != null && drone.getWeightLimit() > 0 &&
-                drone.getSerialNumber().length() <= 100 && drone.getWeightLimit() <= 500 &&
-                drone.getBatteryLevel() >= 0 && drone.getBatteryLevel() <= 100;
+        return drone.getSerialNumber() != null && drone.getModel() != null &&
+                drone.getWeightLimit() > DroneManagementConstants.MIN_DRONE_WEIGHT_LIMIT &&
+                drone.getWeightLimit() <= DroneManagementConstants.MAX_DRONE_WEIGHT_LIMIT &&
+                drone.getSerialNumber().length() <= DroneManagementConstants.MAX_DRONE_SERIAL_NUMBER_LENGTH &&
+                drone.getBatteryLevel() >= DroneManagementConstants.MIN_DRONE_BATTERY_LEVEL &&
+                drone.getBatteryLevel() <= DroneManagementConstants.MAX_DRONE_BATTERY_LIMIT;
     }
 
     public static boolean isDroneLoaded(Drone drone) {
@@ -49,6 +57,23 @@ public class DroneManagementUtil {
                 return true;
             default:
                 return false;
+        }
+    }
+
+    public static byte[] readImageFromResources(String fileName) throws DroneManagementServiceException {
+        String imageLocation = DroneManagementConstants.SAMPLE_IMAGE_DIRECTORY + fileName;
+        try (InputStream inputStream = SampleDroneManagementDataProvider.class.getResourceAsStream(imageLocation)) {
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            byte[] buffer = new byte[DroneManagementConstants.IMAGE_BUFFER_SIZE];
+            int len;
+            while ((len = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, len);
+            }
+            return outputStream.toByteArray();
+        } catch (IOException e) {
+            log.error("Error while reading image file " + fileName + " from location " + imageLocation);
+            throw new DroneManagementServiceException(
+                    "Error while reading image file " + fileName + " from location " + imageLocation, e);
         }
     }
 }
