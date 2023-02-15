@@ -37,9 +37,9 @@ You can use this postman script or below curl commands for testing the API endpo
 
 [Postman Script](https://elements.getpostman.com/redirect?entityId=9989156-a4a35c13-6e01-4d82-91f6-eef75f4efbdc&entityType=collection).
 
-__Please note these endpoints are secured with basic authentication. Therefore, you need to provide the basic authentication header for the default user when invoking the endpoint. The default username is **user** and password is **password**. You can change them from here if you wish to use unique credentials.__ 
+__Please note these endpoints are secured with basic authentication. Therefore, you need to provide the basic authentication header for the default user when invoking the endpoint. The default username is `user` and password is `password`. You can change them from here if you wish to use unique credentials.__ 
 
-1. Adding a drone
+### Registering a drone
 ```
 curl -X POST -H "Content-type: application/json" -d '{
 "serialNumber": "14",
@@ -58,7 +58,7 @@ You will receive a 201 Created response with a response as below to indicate the
     "state": "IDLE"
 }
 ```
-2. Check available medications
+### Check available medications
 
 ```
 curl -X GET -H "Content-type: application/json" -u user:password 'http://localhost:8080/api/v1/medication'
@@ -91,7 +91,7 @@ You will get a `200 OK` response with a payload with medications as below.
 ]
 ```
 
-3. Load a drone with medication. ( Creating a delivery)
+### Loading a drone with medication items. ( Creating a delivery)
 
 We created a drone with serial number 14 in the first call. We can note the medication IDs from the above 2nd call. With that information, we can construct this request to load a drone with medications as below.
 
@@ -145,7 +145,14 @@ You will get a `201 Created` response with response like below.
     ]
 }
 ```
-4. Checking the drone for loaded Medications
+If the sum of all medication items you are trying to load into the drone is greater than than the maximum allowed weight, you will receive a `400 Bad Request` error response as below.
+
+```
+{
+    "message": "Drone 19 can carry only 100.0 grams but the request load weight more"
+}
+```
+### Checking loaded medication items for a given drone
 
 ```
 curl -X GET -H "Content-type: application/json" -u user:password 'http://localhost:8080/api/v1/delivery/drone/12'
@@ -156,7 +163,7 @@ If the `droneSerialNumber` is a valid value ( to which you loaded medications pr
 {
     "id": 128,
     "drone": {
-        "serialNumber": "12",
+        "serialNumber": "14",
         "model": "Heavyweight",
         "weightLimit": 499.1,
         "batteryLevel": 100.0,
@@ -187,7 +194,7 @@ If you sent an invalid serial Number, you will receive an `400 Bad Request` erro
     "message": "Drone for the given serial number 100 is not loaded with medications"
 }
 ```
-5. Check for available drones ( for loading medication)
+### Checking available drones for loading.
 
 ```
 curl -X GET -H "Content-type: application/json" -u user:password 'http://localhost:8080/api/v1/drone/available'
@@ -241,7 +248,7 @@ You will receive a `200 OK` response with a set of available drones as a JSON Ar
     }
 ]
 ```
-6. Check the battery level of a drone
+### Check drone battery level for a given drone
 
 ```
 curl -X GET -H "Content-type: application/json" -u user:password 'http://localhost:8080/api/v1/drone/11/battery'
@@ -261,3 +268,136 @@ If the serial number is invalid, you will receive a `400 Bad Request` error mess
     "message": "Drone with serial number 11 not found"
 }
 ```
+
+## periodic task to check drones battery levels and create history/audit event log for this.
+
+A periodic task is running ( in every 10 minutes according to default configurations. You can change this from here) to check the battery status of each drone and create a log event into the database. To view this information, an API has been implemented. Use the below curl commands to retrieve event logs.
+
+### Retrieve all battery audit events
+
+```
+curl -X GET -H "Content-type: application/json" -u user:password 'http://localhost:8080/api/v1/audit/battery'
+
+```
+If the curl command is successful, you will see a JSON response like below.
+
+```
+[
+    {
+        "id": 1,
+        "droneSerialNumber": "0",
+        "time": "2023-02-15T12:33:02.348451",
+        "batteryLevel": 77.08
+    },
+    {
+        "id": 2,
+        "droneSerialNumber": "1",
+        "time": "2023-02-15T12:33:02.365975",
+        "batteryLevel": 29.91
+    },
+    {
+        "id": 3,
+        "droneSerialNumber": "2",
+        "time": "2023-02-15T12:33:02.367227",
+        "batteryLevel": 80.95
+    },
+    {
+        "id": 4,
+        "droneSerialNumber": "3",
+        "time": "2023-02-15T12:33:02.367844",
+        "batteryLevel": 64.27
+    },
+    {
+        "id": 5,
+        "droneSerialNumber": "4",
+        "time": "2023-02-15T12:33:02.36847",
+        "batteryLevel": 84.13
+    },
+    {
+        "id": 6,
+        "droneSerialNumber": "5",
+        "time": "2023-02-15T12:33:02.369068",
+        "batteryLevel": 22.39
+    },
+    {
+        "id": 7,
+        "droneSerialNumber": "6",
+        "time": "2023-02-15T12:33:02.36965",
+        "batteryLevel": 49.53
+    },
+    {
+        "id": 8,
+        "droneSerialNumber": "7",
+        "time": "2023-02-15T12:33:02.370194",
+        "batteryLevel": 96.13
+    },
+    {
+        "id": 9,
+        "droneSerialNumber": "8",
+        "time": "2023-02-15T12:33:02.370728",
+        "batteryLevel": 67.5
+    },
+    {
+        "id": 10,
+        "droneSerialNumber": "9",
+        "time": "2023-02-15T12:33:02.371226",
+        "batteryLevel": 62.72
+    },
+    ...
+    {
+        "id": 111,
+        "droneSerialNumber": "9",
+        "time": "2023-02-15T12:43:02.363632",
+        "batteryLevel": 77.08
+    }
+]
+```
+### Retrieve battery audit events for a selected drone
+
+```
+http://localhost:8080/api/v1/audit/battery?droneSerialNumber=1
+```
+If the curl command is successful, you will see a JSON response like below.
+
+```
+[
+    {
+        "id": 7,
+        "droneSerialNumber": "1",
+        "time": "2023-02-15T15:38:59.440866",
+        "batteryLevel": 57.92
+    },
+    {
+        "id": 19,
+        "droneSerialNumber": "1",
+        "time": "2023-02-15T15:48:59.424383",
+        "batteryLevel": 57.92
+    },
+    {
+        "id": 31,
+        "droneSerialNumber": "1",
+        "time": "2023-02-15T15:58:59.418785",
+        "batteryLevel": 57.92
+    },
+    {
+        "id": 43,
+        "droneSerialNumber": "1",
+        "time": "2023-02-15T16:08:59.456179",
+        "batteryLevel": 57.92
+    },
+    {
+        "id": 55,
+        "droneSerialNumber": "1",
+        "time": "2023-02-15T16:18:59.469152",
+        "batteryLevel": 57.92
+    },
+    ...
+    {
+        "id": 139,
+        "droneSerialNumber": "1",
+        "time": "2023-02-15T17:28:59.326265",
+        "batteryLevel": 57.92
+    }
+]
+```
+
