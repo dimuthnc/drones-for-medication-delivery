@@ -32,4 +32,13 @@ public class AuditService {
         drones.forEach(drone -> auditRepository.save(
                 new DroneBatteryAuditRecord(drone.getSerialNumber(), LocalDateTime.now(), drone.getBatteryLevel())));
     }
+
+    public List<DroneBatteryAuditRecord> getDroneBatteryAuditRecords(String droneSerialNumber) {
+        if(droneSerialNumber != null) {
+            return auditRepository.findDroneBatteryAuditRecordByDroneSerialNumber(droneSerialNumber);
+        }
+        else {
+            return auditRepository.findAll();
+        }
+    }
 }
