@@ -62,9 +62,10 @@ public class DeliveryService {
     }
 
     @Transactional
-    public void addDelivery(Delivery delivery) throws DroneManagementServiceException {
+    public Delivery addDelivery(Delivery delivery) throws DroneManagementServiceException {
         Optional<Drone> drone = droneService.findDroneBySerialNumber(delivery.getDrone().getSerialNumber());
         if (drone.isPresent() && drone.get().getBatteryLevel() > DroneManagementConstants.MIN_BATTERY_FOR_LOADING) {
+            delivery.setDrone(drone.get());
             Delivery savedDelivery = deliveryRepository.save(delivery);
             List<MedicationDelivery> medicationDeliveries = delivery.getMedicationDeliveries();
             double droneWeightLimit = drone.get().getWeightLimit();
@@ -92,6 +93,7 @@ public class DeliveryService {
                 }
             }
             droneService.updateDroneStatus(delivery.getDrone(), DroneState.LOADED);
+            return savedDelivery;
         } else {
             if (drone.isEmpty()) {
                 throw new DroneManagementServiceException(

@@ -30,7 +30,7 @@ public class DroneService {
         return droneRepository.findAll();
     }
 
-    public void addDrone(Drone drone) throws DroneManagementServiceException {
+    public Drone addDrone(Drone drone) throws DroneManagementServiceException {
         if (droneRepository.findDroneBySerialNumber(drone.getSerialNumber()).isPresent()) {
             log.error("Drone with serial number " + drone.getSerialNumber() + " already exists");
             throw new DroneManagementServiceException(
@@ -43,7 +43,7 @@ public class DroneService {
             if (drone.getState() == null) {
                 drone.setState(DroneState.IDLE);
             }
-            droneRepository.save(drone);
+            return droneRepository.save(drone);
         }
     }
 
