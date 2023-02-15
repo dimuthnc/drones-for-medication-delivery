@@ -1,8 +1,8 @@
 package com.drones.dimuth.drone.management.service;
 
 import com.drones.dimuth.drone.management.dao.Medication;
-import com.drones.dimuth.drone.management.dao.MedicationListResponse;
 import com.drones.dimuth.drone.management.repository.MedicationRepository;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,8 +21,8 @@ public class MedicationService {
         return medicationRepository.save(medication);
     }
 
-    public MedicationListResponse getAllMedications() {
-        return new MedicationListResponse(medicationRepository.findAllMedication());
+    public List<Medication> getAllMedications() {
+        return medicationRepository.findAll();
     }
 
     public Optional<Medication> getMedicationByCode(String code) {
