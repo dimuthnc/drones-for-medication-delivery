@@ -14,6 +14,13 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ControllerAdvice
 public class DroneManagementServiceExceptionHandlerController {
 
+    /**
+     * Handler for DroneManagementException. This method will respond to the client with 400 Bad Request
+     * when the DroneManagementServiceException is thrown from code.
+     *
+     * @param e Exception object.
+     * @return Response parameters as a map.
+     */
     @ExceptionHandler(DroneManagementServiceException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody

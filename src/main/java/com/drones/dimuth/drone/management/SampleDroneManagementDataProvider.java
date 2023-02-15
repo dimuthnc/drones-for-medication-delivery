@@ -20,6 +20,9 @@ public class SampleDroneManagementDataProvider {
 
     private static final Log log = LogFactory.getLog(SampleDroneManagementDataProvider.class);
 
+    /**
+     * Method to add sample drones.
+     */
     static void addSampleDrones() {
         log.info("Adding Sample drone data");
         List<DroneModel> models =
@@ -45,6 +48,9 @@ public class SampleDroneManagementDataProvider {
         }
     }
 
+    /**
+     * Method to add sample medications.
+     */
     static void addSampleMedications() {
         log.info("Adding Sample medication data");
         List<Medication> medications = new ArrayList<>();
@@ -57,6 +63,12 @@ public class SampleDroneManagementDataProvider {
                 medication -> DronesManagementServiceApplication.getMedicationService().saveMedication(medication));
     }
 
+    /**
+     * Method to retrieve sample data for medication.
+     *
+     * @return List of medication objects.
+     * @throws DroneManagementServiceException When failed to load the medication images
+     */
     private static List<Medication> getSampleMedications() throws DroneManagementServiceException {
 
         List<String> imageNames = Arrays.asList("1.png", "2.png", "3.png", "4.jpeg");

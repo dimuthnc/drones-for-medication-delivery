@@ -21,6 +21,13 @@ public class DroneManagementUtil {
         return Math.round(amount * 100.0) / 100.0;
     }
 
+    /**
+     * Utility method to determine drone state change is valid.
+     *
+     * @param currentState Current status of the drone.
+     * @param state        proposed state.
+     * @return boolean value indicating the validity of the state change.
+     */
     public static boolean isValidDroneStateChange(DroneState currentState, DroneState state) {
         if (log.isDebugEnabled()) {
             log.debug("Validating drone state change from " + currentState + " to " + state);
@@ -39,6 +46,12 @@ public class DroneManagementUtil {
         }
     }
 
+    /**
+     * Method to validate drone add request.
+     *
+     * @param drone drone object proposed for adding to the system.
+     * @return boolean value indicating the validity of request.
+     */
     public static boolean isValidDroneAddRequest(Drone drone) {
         log.debug("Validating drone add request of drone " + drone);
         return drone.getSerialNumber() != null && drone.getModel() != null &&
@@ -49,17 +62,31 @@ public class DroneManagementUtil {
                 drone.getBatteryLevel() <= DroneManagementConstants.MAX_DRONE_BATTERY_LIMIT;
     }
 
+    /**
+     * Method to check drone is loaded or not.
+     *
+     * @param drone Drone object.
+     * @return boolean value indicating the loaded status.
+     */
     public static boolean isDroneLoaded(Drone drone) {
         log.debug("Checking if drone " + drone + " is loaded");
         switch (drone.getState()) {
             case LOADED:
             case DELIVERING:
+            case LOADING:
                 return true;
             default:
                 return false;
         }
     }
 
+    /**
+     * Method to read image resources from the resource location of project.
+     *
+     * @param fileName name of the file.
+     * @return Image as a Byte array.
+     * @throws DroneManagementServiceException When failed to read the image.
+     */
     public static byte[] readImageFromResources(String fileName) throws DroneManagementServiceException {
         String imageLocation = DroneManagementConstants.SAMPLE_IMAGE_DIRECTORY + fileName;
         try (InputStream inputStream = SampleDroneManagementDataProvider.class.getResourceAsStream(imageLocation)) {
