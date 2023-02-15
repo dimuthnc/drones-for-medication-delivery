@@ -11,7 +11,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface DeliveryRepository extends JpaRepository<Delivery, UUID> {
-
     Delivery findByDrone(Drone d);
-
 }

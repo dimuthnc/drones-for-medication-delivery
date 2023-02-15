@@ -29,7 +29,7 @@ public class AuditService {
     @Scheduled(fixedRate = DroneManagementConstants.AUDIT_FREQUENCY)
     public void AuditDroneBattery() {
         List<Drone> drones = droneRepository.findAll();
-        drones.forEach(drone -> auditRepository.save(new DroneBatteryAuditRecord(drone.getSerialNumber(),
-                LocalDateTime.now(), drone.getBatteryLevel())));
+        drones.forEach(drone -> auditRepository.save(
+                new DroneBatteryAuditRecord(drone.getSerialNumber(), LocalDateTime.now(), drone.getBatteryLevel())));
     }
 }
