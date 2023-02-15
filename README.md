@@ -37,7 +37,7 @@ You can use this postman script or below curl commands for testing the API endpo
 
 [Postman Script](https://elements.getpostman.com/redirect?entityId=9989156-a4a35c13-6e01-4d82-91f6-eef75f4efbdc&entityType=collection).
 
-__Please note these endpoints are secured with basic authentication. Therefore, you need to provide the basic authentication header for the default user when invoking the endpoint. The default username is `user` and password is `password`. You can change them from here if you wish to use unique credentials.__ 
+__Please note these endpoints are secured with basic authentication. Therefore, you need to provide the basic authentication header for the default user when invoking the endpoint. The default username is `user` and password is `password`. You can change them from [here](https://github.com/dimuthnc/drones-for-medication-delivery/blob/6c50e5e6de4f8d6c421b8b0b41f3725a56fe2008/src/main/java/com/drones/dimuth/drone/management/config/SecurityConfig.java#L22) if you wish to use unique credentials.__ 
 
 ### Registering a drone
 ```
@@ -96,7 +96,7 @@ You will get a `200 OK` response with a payload with medications as below.
 We created a drone with serial number 14 in the first call. We can note the medication IDs from the above 2nd call. With that information, we can construct this request to load a drone with medications as below.
 
 ```
-curl -XPOST -H "Content-type: application/json" -d '{
+curl -X POST -H "Content-type: application/json" -d '{
     "drone": {
         "serialNumber": "14"
     },
@@ -155,7 +155,7 @@ If the sum of all medication items you are trying to load into the drone is grea
 ### Checking loaded medication items for a given drone
 
 ```
-curl -X GET -H "Content-type: application/json" -u user:password 'http://localhost:8080/api/v1/delivery/drone/12'
+curl -X GET -H "Content-type: application/json" -u user:password 'http://localhost:8080/api/v1/delivery/drone/14'
 ```
 If the `droneSerialNumber` is a valid value ( to which you loaded medications previously), you will receive a `200 OK` with a response to indicate the drone information and loaded medication information. 
 
@@ -251,7 +251,7 @@ You will receive a `200 OK` response with a set of available drones as a JSON Ar
 ### Check drone battery level for a given drone
 
 ```
-curl -X GET -H "Content-type: application/json" -u user:password 'http://localhost:8080/api/v1/drone/11/battery'
+curl -X GET -H "Content-type: application/json" -u user:password 'http://localhost:8080/api/v1/drone/14/battery'
 
 ```
 If the serial number is you sent as a path parameter is a valid serial number of a registered drone, you will receive a `200 OK` success response as below.
@@ -271,7 +271,7 @@ If the serial number is invalid, you will receive a `400 Bad Request` error mess
 
 ## periodic task to check drones battery levels and create history/audit event log for this.
 
-A periodic task is running ( in every 10 minutes according to default configurations. You can change this from here) to check the battery status of each drone and create a log event into the database. To view this information, an API has been implemented. Use the below curl commands to retrieve event logs.
+A periodic task is running ( in every 10 minutes according to default configurations. You can change this from [here](https://github.com/dimuthnc/drones-for-medication-delivery/blob/6c50e5e6de4f8d6c421b8b0b41f3725a56fe2008/src/main/java/com/drones/dimuth/drone/management/util/DroneManagementConstants.java#L9)) to check the battery status of each drone and create a log event into the database. To view this information, an API has been implemented. Use the below curl commands to retrieve event logs.
 
 ### Retrieve all battery audit events
 
@@ -355,7 +355,8 @@ If the curl command is successful, you will see a JSON response like below.
 ### Retrieve battery audit events for a selected drone
 
 ```
-http://localhost:8080/api/v1/audit/battery?droneSerialNumber=1
+curl -X GET -H "Content-type: application/json" -u user:password 'http://localhost:8080/api/v1/audit/battery?droneSerialNumber=1'
+
 ```
 If the curl command is successful, you will see a JSON response like below.
 
