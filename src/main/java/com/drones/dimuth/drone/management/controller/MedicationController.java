@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Rest controller for medication related operations.
  */
 @RestController
-@RequestMapping("api/v1/medications")
+@RequestMapping("api/v1/medication")
 public class MedicationController {
     private final MedicationService medicationService;
 

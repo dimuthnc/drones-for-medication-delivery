@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Rest controller for drone related operations.
  */
 @RestController
-@RequestMapping("api/v1/drones")
+@RequestMapping("api/v1/drone")
 public class DroneController {
 
     private final DroneService droneService;
