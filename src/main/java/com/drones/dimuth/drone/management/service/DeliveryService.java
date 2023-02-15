@@ -8,14 +8,19 @@ import com.drones.dimuth.drone.management.exception.DroneManagementServiceExcept
 import com.drones.dimuth.drone.management.model.DroneState;
 import com.drones.dimuth.drone.management.repository.DeliveryRepository;
 import com.drones.dimuth.drone.management.util.DroneManagementConstants;
+import com.drones.dimuth.drone.management.util.DroneManagementUtil;
 import java.util.List;
 import java.util.Optional;
 import javax.transaction.Transactional;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class DeliveryService {
+
+    private static final Log log = LogFactory.getLog(DroneService.class);
 
     DeliveryRepository deliveryRepository;
 
@@ -37,11 +42,17 @@ public class DeliveryService {
     public Delivery getDeliveryByDrone(String id) throws DroneManagementServiceException {
 
         Optional<Drone> droneOptional = droneService.findDroneBySerialNumber(id);
-        if (droneOptional.isPresent() && droneOptional.get().getState() == DroneState.LOADED) {
+        if (droneOptional.isPresent() && DroneManagementUtil.isDroneLoaded(droneOptional.get())) {
             Drone drone = droneOptional.get();
             return deliveryRepository.findByDrone(drone);
         } else {
-            throw new DroneManagementServiceException("Invalid Serial Number");
+            if (!droneOptional.isPresent()) {
+                log.error("Drone for the given serial number " + id + " is not loaded with medications");
+                throw new DroneManagementServiceException("Drone not in loaded state");
+            } else {
+                log.error("Serial number " + id + " is not a valid drone serial number");
+                throw new DroneManagementServiceException("Invalid Serial Number");
+            }
         }
     }
 
@@ -63,9 +74,12 @@ public class DeliveryService {
                         medicationDelivery.setMedication(medication.get());
                         saveMedicationDelivery(medicationDelivery);
                     } else {
+                        log.error("Drone " + drone.get().getSerialNumber() + " can carry only " + droneWeightLimit +
+                                " grams" + " but the request load weight is " + weightSum);
                         throw new DroneManagementServiceException("Drone Weight Limit Exceeded");
                     }
                 } else {
+                    log.error("Medication " + medicationDelivery.getMedication().getCode() + " not found");
                     throw new DroneManagementServiceException("Medication not found");
                 }
             }
@@ -74,6 +88,7 @@ public class DeliveryService {
             if (drone.isEmpty()) {
                 throw new DroneManagementServiceException("Drone not found");
             } else {
+                log.error("Drone " + drone.get().getSerialNumber() + " has less than 10% battery");
                 throw new DroneManagementServiceException(
                         "Need more than 10% battery in " + "the drone to create a delivery");
             }

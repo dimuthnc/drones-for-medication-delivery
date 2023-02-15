@@ -8,11 +8,14 @@ import com.drones.dimuth.drone.management.repository.DroneRepository;
 import com.drones.dimuth.drone.management.util.DroneManagementUtil;
 import java.util.List;
 import java.util.Optional;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class DroneService {
+    private static final Log log = LogFactory.getLog(DroneService.class);
     private final DroneRepository droneRepository;
 
     @Autowired
@@ -26,12 +29,16 @@ public class DroneService {
 
     public void addDrone(Drone drone) throws DroneManagementServiceException {
         if (droneRepository.findDroneBySerialNumber(drone.getSerialNumber()).isPresent()) {
+            log.error("Drone with serial number " + drone.getSerialNumber() + " already exists");
             throw new DroneManagementServiceException("Drone already exists");
         }
         if (!DroneManagementUtil.isValidDroneAddRequest(drone)) {
+            log.error("Drone validation failed");
             throw new DroneManagementServiceException("Invalid request parameter");
         } else {
-            drone.setState(DroneState.IDLE);
+            if (drone.getState() == null) {
+                drone.setState(DroneState.IDLE);
+            }
             droneRepository.save(drone);
         }
     }
@@ -41,21 +48,22 @@ public class DroneService {
     }
 
     public void updateDroneStatus(Drone drone, DroneState state) throws DroneManagementServiceException {
+        if (log.isDebugEnabled()) {
+            log.debug("Updating drone status to " + state + " for drone " + drone.getSerialNumber());
+        }
         Optional<Drone> droneOptional = droneRepository.findDroneBySerialNumber(drone.getSerialNumber());
         if (droneOptional.isPresent()) {
             DroneState currentState = droneOptional.get().getState();
             if (DroneManagementUtil.isValidDroneStateChange(currentState, state)) {
                 droneRepository.updateDroneStatus(drone.getSerialNumber(), state);
             } else {
+                log.error("Invalid state change from " + currentState + " to " + state);
                 throw new DroneManagementServiceException("Invalid state change");
             }
         } else {
+            log.error("Drone with serial number " + drone.getSerialNumber() + "not found");
             throw new DroneManagementServiceException("Drone not found");
         }
-    }
-
-    public DroneState getDroneState(String serialNumber) {
-        return droneRepository.findDroneBySerialNumber(serialNumber).get().getState();
     }
 
     public List<Drone> getAllAvailableDrones() {
@@ -67,6 +75,7 @@ public class DroneService {
         if (droneOptional.isPresent()) {
             return new BatteryLevel(droneOptional.get().getBatteryLevel());
         } else {
+            log.error("Drone with serial number " + droneSerialNumber + "not found");
             throw new DroneManagementServiceException("Invalid Drone Serial Number");
         }
     }

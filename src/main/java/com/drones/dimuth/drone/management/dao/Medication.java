@@ -68,4 +68,8 @@ public class Medication {
     public void setImage(byte[] image) {
         this.image = image;
     }
+
+    public String toString() {
+        return "Medication [code=" + code + ", weight=" + weight + ", name=" + name + "]";
+    }
 }

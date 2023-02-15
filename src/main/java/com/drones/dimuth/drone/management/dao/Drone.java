@@ -36,6 +36,15 @@ public class Drone {
         this.state = state;
     }
 
+    public Drone(String serialNumber, DroneModel model, double weightLimit, double batteryLevel) {
+        this.serialNumber = serialNumber;
+        this.model = model;
+        this.weightLimit = weightLimit;
+        this.batteryLevel = batteryLevel;
+        this.state = DroneState.IDLE;
+    }
+
+
     public String getSerialNumber() {
         return serialNumber;
     }
@@ -74,5 +83,10 @@ public class Drone {
 
     public void setState(DroneState state) {
         this.state = state;
+    }
+
+    public String toString() {
+        return "Drone [serialNumber=" + serialNumber + ", model=" + model + ", weightLimit=" + weightLimit +
+                ", batteryLevel=" + batteryLevel + ", state=" + state + "]";
     }
 }
