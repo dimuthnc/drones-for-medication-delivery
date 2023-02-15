@@ -51,10 +51,12 @@ public class DeliveryService {
         } else {
             if (!droneOptional.isPresent()) {
                 log.error("Drone for the given serial number " + id + " is not loaded with medications");
-                throw new DroneManagementServiceException("Drone not in loaded state");
+                throw new DroneManagementServiceException(
+                        "Drone for the given serial number " + id + " is not loaded with medications");
             } else {
-                log.error("Serial number " + id + " is not a valid drone serial number");
-                throw new DroneManagementServiceException("Invalid Serial Number");
+                log.error("Serial number " + id + " is not a valid drone serial number with a medications load");
+                throw new DroneManagementServiceException(
+                        "Serial number " + id + " is not a valid drone serial number with a medications load");
             }
         }
     }
@@ -79,21 +81,26 @@ public class DeliveryService {
                     } else {
                         log.error("Drone " + drone.get().getSerialNumber() + " can carry only " + droneWeightLimit +
                                 " grams" + " but the request load weight is " + weightSum);
-                        throw new DroneManagementServiceException("Drone Weight Limit Exceeded");
+                        throw new DroneManagementServiceException(
+                                "Drone " + drone.get().getSerialNumber() + " can carry only " + droneWeightLimit +
+                                        " grams" + " but the request load weight more");
                     }
                 } else {
                     log.error("Medication " + medicationDelivery.getMedication().getCode() + " not found");
-                    throw new DroneManagementServiceException("Medication not found");
+                    throw new DroneManagementServiceException(
+                            "Medication " + medicationDelivery.getMedication().getCode() + " not found");
                 }
             }
             droneService.updateDroneStatus(delivery.getDrone(), DroneState.LOADED);
         } else {
             if (drone.isEmpty()) {
-                throw new DroneManagementServiceException("Drone not found");
-            } else {
-                log.error("Drone " + drone.get().getSerialNumber() + " has less than 10% battery");
                 throw new DroneManagementServiceException(
-                        "Need more than 10% battery in " + "the drone to create a delivery");
+                        "Drone with serial number " + delivery.getDrone().getSerialNumber() + " not found");
+            } else {
+                log.error("Drone " + drone.get().getSerialNumber() + " has less than " +
+                        DroneManagementConstants.MIN_BATTERY_FOR_LOADING + " battery");
+                throw new DroneManagementServiceException("Drone " + drone.get().getSerialNumber() + " has less than " +
+                        DroneManagementConstants.MIN_BATTERY_FOR_LOADING + " battery");
             }
         }
     }

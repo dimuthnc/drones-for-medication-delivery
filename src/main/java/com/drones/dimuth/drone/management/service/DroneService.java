@@ -33,7 +33,8 @@ public class DroneService {
     public void addDrone(Drone drone) throws DroneManagementServiceException {
         if (droneRepository.findDroneBySerialNumber(drone.getSerialNumber()).isPresent()) {
             log.error("Drone with serial number " + drone.getSerialNumber() + " already exists");
-            throw new DroneManagementServiceException("Drone already exists");
+            throw new DroneManagementServiceException(
+                    "Drone with serial number " + drone.getSerialNumber() + " already exists");
         }
         if (!DroneManagementUtil.isValidDroneAddRequest(drone)) {
             log.error("Drone validation failed");
@@ -61,11 +62,13 @@ public class DroneService {
                 droneRepository.updateDroneStatus(drone.getSerialNumber(), state);
             } else {
                 log.error("Invalid state change from " + currentState + " to " + state);
-                throw new DroneManagementServiceException("Invalid state change");
+                throw new DroneManagementServiceException(
+                        "Drone " + drone.getSerialNumber() + "is not in a loadable state");
             }
         } else {
             log.error("Drone with serial number " + drone.getSerialNumber() + "not found");
-            throw new DroneManagementServiceException("Drone not found");
+            throw new DroneManagementServiceException(
+                    "Drone with serial number " + drone.getSerialNumber() + "not found");
         }
     }
 
@@ -78,8 +81,8 @@ public class DroneService {
         if (droneOptional.isPresent()) {
             return new BatteryLevel(droneOptional.get().getBatteryLevel());
         } else {
-            log.error("Drone with serial number " + droneSerialNumber + "not found");
-            throw new DroneManagementServiceException("Invalid Drone Serial Number");
+            log.error("Drone with serial number " + droneSerialNumber + " not found");
+            throw new DroneManagementServiceException("Drone with serial number " + droneSerialNumber + " not found");
         }
     }
 }
