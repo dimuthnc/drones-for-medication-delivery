@@ -1,6 +1,5 @@
 package com.drones.dimuth.drone.management.util;
 
-import com.drones.dimuth.drone.management.dao.Delivery;
 import com.drones.dimuth.drone.management.dao.Drone;
 import com.drones.dimuth.drone.management.model.DroneModel;
 import com.drones.dimuth.drone.management.model.DroneState;

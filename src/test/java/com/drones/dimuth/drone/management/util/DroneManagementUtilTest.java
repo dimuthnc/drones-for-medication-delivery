@@ -2,17 +2,12 @@ package com.drones.dimuth.drone.management.util;
 
 import com.drones.dimuth.drone.management.dao.Drone;
 import com.drones.dimuth.drone.management.exception.DroneManagementServiceException;
-import com.drones.dimuth.drone.management.model.DroneModel;
 import com.drones.dimuth.drone.management.model.DroneState;
 import java.util.ArrayList;
 import java.util.List;
-import org.aspectj.lang.annotation.Before;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.context.event.annotation.BeforeTestClass;
-import org.springframework.test.context.event.annotation.BeforeTestExecution;
-import static org.junit.jupiter.api.Assertions.*;
 
 class DroneManagementUtilTest {
 
