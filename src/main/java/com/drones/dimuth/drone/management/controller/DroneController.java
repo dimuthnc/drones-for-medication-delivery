@@ -8,6 +8,7 @@ import java.util.List;
 import javax.transaction.NotSupportedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,11 +39,11 @@ public class DroneController {
 
     @GetMapping("status")
     public List<Drone> getAvailableDrones(@RequestParam(value = "filter") String filter)
-            throws NotSupportedException {
+            throws DroneManagementServiceException {
         if (filter.equalsIgnoreCase("available")) {
             return droneService.getAllAvailableDrones();
         } else {
-            throw new NotSupportedException();
+            throw new DroneManagementServiceException("Invalid filter parameter. Only 'available' is supported.");
         }
 
     }
@@ -57,7 +58,7 @@ public class DroneController {
     public BatteryLevel getDroneBatteryLevel(@PathVariable String droneSerialNumber, @RequestParam(value = "filter") String filter)
             throws DroneManagementServiceException, NotSupportedException {
         if (!filter.equalsIgnoreCase("battery")) {
-            throw new NotSupportedException();
+            throw new DroneManagementServiceException("Invalid filter parameter. Only 'battery' is supported.");
         }
         return droneService.getDroneBatteryLevel(droneSerialNumber);
     }
