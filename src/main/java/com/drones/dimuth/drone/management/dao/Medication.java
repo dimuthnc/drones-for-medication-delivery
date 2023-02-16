@@ -10,7 +10,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
- *
+ * Entity class for Medication.
  */
 @Entity
 @Table(name = "medication")

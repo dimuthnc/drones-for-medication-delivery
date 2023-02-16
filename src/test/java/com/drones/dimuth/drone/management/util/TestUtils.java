@@ -6,6 +6,9 @@ import com.drones.dimuth.drone.management.model.DroneState;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Utilities required for tests.
+ */
 public class TestUtils {
 
     public static List<Drone> getSampleDrones() {

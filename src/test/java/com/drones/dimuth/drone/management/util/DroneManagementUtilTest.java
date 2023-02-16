@@ -9,6 +9,9 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+/**
+ * Tests for Drone Management.
+ */
 class DroneManagementUtilTest {
 
     private static List<Drone> testDrones = new ArrayList<>();
