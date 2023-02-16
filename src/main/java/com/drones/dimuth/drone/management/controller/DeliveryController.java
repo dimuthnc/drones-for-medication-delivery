@@ -6,10 +6,10 @@ import com.drones.dimuth.drone.management.service.DeliveryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,12 +26,13 @@ public class DeliveryController {
         this.deliveryService = deliveryService;
     }
 
-    @GetMapping("drone/{id}")
-    public Delivery getDeliveryByDroneId(@PathVariable String id) throws DroneManagementServiceException {
+    @GetMapping("status")
+    public Delivery getDeliveryByDroneId(@RequestParam(value = "droneId") String id)
+            throws DroneManagementServiceException {
         return deliveryService.getDeliveryByDrone(id);
     }
 
-    @PostMapping("drone")
+    @PostMapping("register")
     @ResponseStatus(HttpStatus.CREATED)
     public Delivery addDelivery(@RequestBody Delivery delivery) throws DroneManagementServiceException {
         return deliveryService.addDelivery(delivery);
