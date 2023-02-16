@@ -46,7 +46,7 @@ curl -X POST -H "Content-type: application/json" -d '{
 "model": "Heavyweight",
 "weightLimit": 499.1,
 "batteryLevel": "100.0"
-}' -u user:password 'http://localhost:8080/api/v1/drone'
+}' -u user:password 'http://localhost:8080/api/v1/drone/register'
 ```
 You will receive a 201 Created response with a response as below to indicate the created drone
 ```
@@ -112,7 +112,7 @@ curl -X POST -H "Content-type: application/json" -d '{
             }
         }
     ]
-}'  -u user:password 'http://localhost:8080/api/v1/delivery/drone'
+}'  -u user:password 'http://localhost:8080/api/v1/delivery/register'
 
 ```
 You will get a `201 Created` response with response like below. 
@@ -155,7 +155,7 @@ If the sum of all medication items you are trying to load into the drone is grea
 ### Checking loaded medication items for a given drone
 
 ```
-curl -X GET -H "Content-type: application/json" -u user:password 'http://localhost:8080/api/v1/delivery/drone/14'
+curl -X GET -H "Content-type: application/json" -u user:password 'http://localhost:8080/api/v1/delivery/status?droneId=14'
 ```
 If the `droneSerialNumber` is a valid value ( to which you loaded medications previously), you will receive a `200 OK` with a response to indicate the drone information and loaded medication information. 
 
@@ -197,7 +197,7 @@ If you sent an invalid serial Number, you will receive an `400 Bad Request` erro
 ### Checking available drones for loading.
 
 ```
-curl -X GET -H "Content-type: application/json" -u user:password 'http://localhost:8080/api/v1/drone/available'
+curl -X GET -H "Content-type: application/json" -u user:password 'http://localhost:8080/api/v1/drone/status?filter=available'
 ```
 You will receive a `200 OK` response with a set of available drones as a JSON Array as below. Please note the above loaded drones are missing from this list as they are no longer available for loading.
 
@@ -251,7 +251,7 @@ You will receive a `200 OK` response with a set of available drones as a JSON Ar
 ### Check drone battery level for a given drone
 
 ```
-curl -X GET -H "Content-type: application/json" -u user:password 'http://localhost:8080/api/v1/drone/14/battery'
+curl -X GET -H "Content-type: application/json" -u user:password 'http://localhost:8080/api/v1/drone/status/14?filter=battery'
 
 ```
 If the serial number is you sent as a path parameter is a valid serial number of a registered drone, you will receive a `200 OK` success response as below.
