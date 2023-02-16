@@ -49,7 +49,7 @@ curl -X POST -H "Content-type: application/json" -d '{
 }' -u user:password 'http://localhost:8080/api/v1/drone/register'
 ```
 You will receive a 201 Created response with a response as below to indicate the created drone
-```
+```json
 {
     "serialNumber": "14",
     "model": "Heavyweight",
@@ -66,7 +66,7 @@ curl -X GET -H "Content-type: application/json" -u user:password 'http://localho
 ```
 You will get a `200 OK` response with a payload with medications as below.
 
-```
+```json
 [
     {
         "weight": 73.74,
@@ -117,7 +117,7 @@ curl -X POST -H "Content-type: application/json" -d '{
 ```
 You will get a `201 Created` response with response like below. 
 
-```
+```json
 {
     "id": 128,
     "drone": {
@@ -147,7 +147,7 @@ You will get a `201 Created` response with response like below.
 ```
 If the sum of all medication items you are trying to load into the drone is greater than than the maximum allowed weight, you will receive a `400 Bad Request` error response as below.
 
-```
+```json
 {
     "message": "Drone 19 can carry only 100.0 grams but the request load weight more"
 }
@@ -159,7 +159,7 @@ curl -X GET -H "Content-type: application/json" -u user:password 'http://localho
 ```
 If the `droneSerialNumber` is a valid value ( to which you loaded medications previously), you will receive a `200 OK` with a response to indicate the drone information and loaded medication information. 
 
-```
+```json
 {
     "id": 128,
     "drone": {
@@ -189,7 +189,7 @@ If the `droneSerialNumber` is a valid value ( to which you loaded medications pr
 ```
 If you sent an invalid serial Number, you will receive an `400 Bad Request` error response as follows.
 
-```
+```json
 {
     "message": "Drone for the given serial number 100 is not loaded with medications"
 }
@@ -201,7 +201,7 @@ curl -X GET -H "Content-type: application/json" -u user:password 'http://localho
 ```
 You will receive a `200 OK` response with a set of available drones as a JSON Array as below. Please note the above loaded drones are missing from this list as they are no longer available for loading.
 
-```
+```json
 [
     {
         "serialNumber": "0",
@@ -255,7 +255,7 @@ curl -X GET -H "Content-type: application/json" -u user:password 'http://localho
 
 ```
 If the serial number is you sent as a path parameter is a valid serial number of a registered drone, you will receive a `200 OK` success response as below.
-```
+```json
 {
     "batteryLevel": 96.4
 }
@@ -263,7 +263,7 @@ If the serial number is you sent as a path parameter is a valid serial number of
 
 If the serial number is invalid, you will receive a `400 Bad Request` error message as below.
 
-```
+```json
 {
     "message": "Drone with serial number 11 not found"
 }
@@ -281,7 +281,7 @@ curl -X GET -H "Content-type: application/json" -u user:password 'http://localho
 ```
 If the curl command is successful, you will see a JSON response like below.
 
-```
+```json
 [
     {
         "id": 1,
@@ -360,7 +360,7 @@ curl -X GET -H "Content-type: application/json" -u user:password 'http://localho
 ```
 If the curl command is successful, you will see a JSON response like below.
 
-```
+```json
 [
     {
         "id": 7,
