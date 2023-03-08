@@ -34,6 +34,10 @@ public class DronesManagementServiceApplication {
         return droneService;
     }
 
+    /**
+     * Main method for the spring boot application.
+     * @param args arguments for the method.
+     */
     public static void main(String[] args) {
         SpringApplication.run(DronesManagementServiceApplication.class, args);
         SampleDroneManagementDataProvider.addSampleMedications();
