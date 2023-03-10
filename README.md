@@ -1,3 +1,5 @@
+[![Java CI](https://github.com/dimuthnc/drones-for-medication-delivery/actions/workflows/maven.yml/badge.svg)](https://github.com/dimuthnc/drones-for-medication-delivery/actions/workflows/maven.yml)
+
 # Drone Management Service
 
 ## Introduction
